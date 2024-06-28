@@ -134,7 +134,6 @@ pantalla = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.display.set_caption("Carrera UTN")
 
 flag_correr = True
-
 while flag_correr:
     lista_eventos = pygame.event.get()
     for evento in lista_eventos:
@@ -158,7 +157,7 @@ while flag_correr:
                     estado_de_juego["nombre_jugador"] += evento.unicode 
                     print(estado_de_juego["nombre_jugador"])
         if evento.type == pygame.MOUSEBUTTONDOWN:
-
+            
             if chequear_click_en_rect(evento.pos,pos_respuesta_A):
                 if estado_de_juego["respuestas_visibles"]: 
                     cambiar_respuesta_apretada(estado_de_juego,"respuesta_apretada",
@@ -183,7 +182,7 @@ while flag_correr:
                     estado_de_juego["indice_pos_personaje"] += 2
                 else:
                     estado_de_juego["indice_pos_personaje"] += 2
-            else:
+            elif estado_de_juego["respuesta_apretada"] != '' :
                 if estado_de_juego["indice_pos_personaje"] - 1 <= 0:
                     frenar_juego(estado_de_juego)
                     # terminar_juego(estado_de_juego,pygame,pantalla,colores)
