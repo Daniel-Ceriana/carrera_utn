@@ -27,8 +27,9 @@ estado_de_juego = {
     "indice_pos_personaje" : 0,
     "segundos" : "5",
     "fin_tiempo" : False,
-    "nombre_jugador" : ""
-    
+    "nombre_jugador" : "",
+    "mostrar_scores":False,
+    "guardado":False
 }
 
 TEXTO_SCORE = fuente.render(str("SCORE"),True,colores.BLACK)
@@ -145,13 +146,15 @@ while flag_correr:
                     if int(estado_de_juego["segundos"]) == 0:
                         estado_de_juego["flag_siguiente_pregunta"] = True
         if evento.type == pygame.KEYDOWN:
-            if evento.key == pygame.K_BACKSPACE:
-                estado_de_juego["nombre_jugador"] = estado_de_juego["nombre_jugador"][0:-1]
-                print(estado_de_juego["nombre_jugador"])
-                
-            elif estado_de_juego["fin_tiempo"] == True:
-                estado_de_juego["nombre_jugador"] += evento.unicode 
-                print(estado_de_juego["nombre_jugador"])
+            if estado_de_juego["fin_tiempo"] == True:
+                if evento.key == pygame.K_BACKSPACE:
+                    estado_de_juego["nombre_jugador"] = estado_de_juego["nombre_jugador"][0:-1]
+                    print(estado_de_juego["nombre_jugador"])
+                elif evento.key == pygame.K_RETURN:
+                    estado_de_juego["mostrar_scores"] = True
+                elif estado_de_juego["fin_tiempo"] == True:
+                    estado_de_juego["nombre_jugador"] += evento.unicode 
+                    print(estado_de_juego["nombre_jugador"])
         if evento.type == pygame.MOUSEBUTTONDOWN:
 
             if chequear_click_en_rect(evento.pos,pos_respuesta_A):

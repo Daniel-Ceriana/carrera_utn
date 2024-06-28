@@ -1,3 +1,5 @@
+from funciones_archivos import *
+from copy import deepcopy
 def chequear_click_en_rect(posicion_click:tuple,item_rect:tuple):
     if ((posicion_click[0] > item_rect[0] and 
          posicion_click[0] < item_rect[0]+item_rect[2])
@@ -56,10 +58,31 @@ def frenar_juego(estado_juego:dict):
      # estado_juego["indice_pos_personaje"] = 0
      estado_juego["fin_tiempo"] = True
      
+def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
+     alto_base_puntajes = 100
+     POS_PUNTAJES = (150,alto_base_puntajes,100,100)
+     POS_NOMBRES = (100,alto_base_puntajes,100,100)
+     
+     
+     fuente = pygame.font.SysFont("Arial",30)
+     
+     PUNTAJES = fuente.render(str("PUNTAJES"),True,colores.BLACK)
+     pantalla.blit(PUNTAJES,POS_PUNTAJES)
+
+     
+     if len(lista_puntajes)>0:
+          for item in lista_puntajes:
+               nombre = fuente.render(str(item["nombre"]),True,colores.BLACK)
+               score = fuente.render(str(item["score"]),True,colores.BLACK)
+               pantalla.blit(nombre,POS_NOMBRES)
+               pantalla.blit(score,POS_PUNTAJES)
+               
 def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
      '''
      termina el juego y guarda el score
      '''
+     aux_guardar_ordenado = []
+     
      fuente = pygame.font.SysFont("Arial",30)
      TEXTO_FINALIZADO = fuente.render(str("JUEGO FINALIZADO, SU PUNTAJE:"),True,colores.BLACK)
      PUNTAJE_FINALIZADO = fuente.render(str(estado_juego["score"]),True,colores.BLACK)
@@ -69,14 +92,43 @@ def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
 
      POS_FINALIZADO = (100,100,100,100)
      POS_PUNTAJE_FINALIZADO = (800,100)
-     POS_INGRESE_NOMBRE = (800,500)
-     POS_INGRESE_NOMBRE_VARIABLE = (800,600)
-     # pos_texto_finalizado
-     pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,POS_FINALIZADO,5)
-     pantalla.blit(TEXTO_FINALIZADO,POS_FINALIZADO)
-     pantalla.blit(PUNTAJE_FINALIZADO,POS_PUNTAJE_FINALIZADO)
-     pantalla.blit(TEXTO_INGRESE_NOMBRE,POS_INGRESE_NOMBRE)
-     pantalla.blit(TEXTO_NOMBRE,POS_INGRESE_NOMBRE_VARIABLE)
+     POS_INGRESE_NOMBRE = (500,400)
+     POS_INGRESE_NOMBRE_VARIABLE = (550,500)
+     if not estado_juego["mostrar_scores"]:
+          # pos_texto_finalizado
+          pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,(
+               POS_INGRESE_NOMBRE_VARIABLE[0]-75,
+               POS_INGRESE_NOMBRE_VARIABLE[1]-30,
+               300,100),5)
+          pantalla.blit(TEXTO_FINALIZADO,POS_FINALIZADO)
+          pantalla.blit(PUNTAJE_FINALIZADO,POS_PUNTAJE_FINALIZADO)
+          pantalla.blit(TEXTO_INGRESE_NOMBRE,POS_INGRESE_NOMBRE)
+          pantalla.blit(TEXTO_NOMBRE,POS_INGRESE_NOMBRE_VARIABLE)
+     else:
+          if not estado_juego["guardado"]:
+               try:
+                    puntajes = leer_json_lista("scores.json")
+               except:
+                    print('Ocurrio un error al leer el archivo de scores')
+               try:
+                    if puntajes:
+                         aux_puntajes = deepcopy(puntajes)
+                         aux_puntajes.append({"nombre":estado_juego["nombre_jugador"],
+                                             "score":estado_juego["score"]})
+                         aux_puntajes.sort(key=lambda item : int(item["score"]), reverse=True)
+                         i = 0
+                         for item in aux_puntajes:
+                              if i < 10:
+                                   aux_guardar_ordenado.append(item)
+                              i += 1
+                         guardar_json_lista("scores.json",aux_guardar_ordenado)
+                         estado_juego["guardado"] = True
+               except:
+                 print('Ocurrio un error al guardar el archivo de scores')
+          else:
+               mostrar_puntajes(aux_guardar_ordenado,pygame,pantalla,colores)   
+                 
+               
 
      
      
