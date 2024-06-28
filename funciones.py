@@ -116,8 +116,12 @@ def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
                try:
                     if puntajes:
                          aux_puntajes = deepcopy(puntajes)
-                         aux_puntajes.append({"nombre":estado_juego["nombre_jugador"],
-                                             "score":estado_juego["score"]})
+                         if len(estado_juego["nombre_jugador"])>0:
+                              aux_puntajes.append({"nombre":estado_juego["nombre_jugador"],
+                                                  "score":estado_juego["score"]})
+                         else:
+                              aux_puntajes.append({"nombre":"NOMBRE_DESCONOCIDO",
+                              "score":estado_juego["score"]})
                          aux_puntajes.sort(key=lambda item : int(item["score"]), reverse=True)
                          i = 0
                          for item in aux_puntajes:

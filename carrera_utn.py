@@ -104,6 +104,8 @@ pygame.time.set_timer(timer_segundos,1000)
 #cargar logo
 imagen = pygame.image.load("logo_carrera_de_mente.png")
 imagen = pygame.transform.scale(imagen,(200,200))
+imagen_utn = pygame.image.load("Logo-utn.png")
+imagen_utn = pygame.transform.scale(imagen_utn,(90,45))
 
 
 
@@ -277,6 +279,7 @@ while flag_correr:
                                         ,pos_respuesta_C[1]+35))
         
         pantalla.blit(imagen,(10,10))
+        pantalla.blit(imagen_utn,(64,100))
         
         pantalla.blit(personaje,estado_de_juego["pos_personaje"])
     else:
