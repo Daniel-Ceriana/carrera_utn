@@ -59,9 +59,10 @@ def frenar_juego(estado_juego:dict):
      estado_juego["fin_tiempo"] = True
      
 def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
-     alto_base_puntajes = 100
-     POS_PUNTAJES = (150,alto_base_puntajes,100,100)
-     POS_NOMBRES = (100,alto_base_puntajes,100,100)
+     alto_base_puntajes = 200
+     POS_PUNTAJES = [400,100,100,100]
+     pos_puntajes = [800,alto_base_puntajes,100,100]
+     POS_NOMBRES = [400,alto_base_puntajes,100,100]
      
      
      fuente = pygame.font.SysFont("Arial",30)
@@ -75,7 +76,9 @@ def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
                nombre = fuente.render(str(item["nombre"]),True,colores.BLACK)
                score = fuente.render(str(item["score"]),True,colores.BLACK)
                pantalla.blit(nombre,POS_NOMBRES)
-               pantalla.blit(score,POS_PUNTAJES)
+               pantalla.blit(score,pos_puntajes)
+               pos_puntajes[1] += 50
+               POS_NOMBRES[1] += 50
                
 def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
      '''
@@ -105,11 +108,11 @@ def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
           pantalla.blit(TEXTO_INGRESE_NOMBRE,POS_INGRESE_NOMBRE)
           pantalla.blit(TEXTO_NOMBRE,POS_INGRESE_NOMBRE_VARIABLE)
      else:
+          try:
+               puntajes = leer_json_lista("scores.json")
+          except:
+               print('Ocurrio un error al leer el archivo de scores')
           if not estado_juego["guardado"]:
-               try:
-                    puntajes = leer_json_lista("scores.json")
-               except:
-                    print('Ocurrio un error al leer el archivo de scores')
                try:
                     if puntajes:
                          aux_puntajes = deepcopy(puntajes)
@@ -126,7 +129,7 @@ def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
                except:
                  print('Ocurrio un error al guardar el archivo de scores')
           else:
-               mostrar_puntajes(aux_guardar_ordenado,pygame,pantalla,colores)   
+               mostrar_puntajes(puntajes,pygame,pantalla,colores)   
                  
                
 

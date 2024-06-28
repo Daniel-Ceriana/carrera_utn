@@ -34,7 +34,7 @@ estado_de_juego = {
 
 TEXTO_SCORE = fuente.render(str("SCORE"),True,colores.BLACK)
 TEXTO_COMENZAR = fuente.render(str("COMENZAR"),True,colores.BLACK)
-TEXTO_REINICIAR = fuente.render(str("REINICIAR"),True,colores.BLACK)
+TEXTO_TERMINAR = fuente.render(str("TERMINAR"),True,colores.BLACK)
 TEXTO_TIEMPO = fuente.render(str("TIEMPO"),True,colores.BLACK)
 
 TEXTO_AVANZA = fuente_boost.render(str("Avanza 1"),True,colores.BLACK)
@@ -111,7 +111,7 @@ imagen = pygame.transform.scale(imagen,(200,200))
     
 # pos_siguiente_pregunta = (300,20,300,100)
 pos_comenzar = (ANCHO_VENTANA*0.5-300,570,220,100)
-pos_reiniciar = (ANCHO_VENTANA*0.5+100,570,200,100)
+pos_terminar = (ANCHO_VENTANA*0.5+100,570,200,100)
 ANCHO_RESPUESTA = ANCHO_VENTANA / 6
 ALTO_RESPUESTA = 100
 pos_respuesta_A = (ANCHO_RESPUESTA*2,ALTO_RESPUESTA,ANCHO_RESPUESTA-10,100)
@@ -187,7 +187,7 @@ while flag_correr:
                     # terminar_juego(estado_de_juego,pygame,pantalla,colores)
                 else:
                     estado_de_juego["indice_pos_personaje"] -= 1
-            if chequear_click_en_rect(evento.pos,pos_reiniciar):
+            if chequear_click_en_rect(evento.pos,pos_terminar):
                 frenar_juego(estado_de_juego)
                 # terminar_juego(estado_de_juego,pygame,pantalla,colores)
             if chequear_click_en_rect(evento.pos,pos_comenzar):
@@ -231,7 +231,7 @@ while flag_correr:
         #botones
             #fijos    
         pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_comenzar)
-        pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_reiniciar)
+        pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_terminar)
         pygame.draw.rect(pantalla,colores.SKYBLUE4,POS_CUADRO_RESPUESTAS)
         
         ###casillas
@@ -262,7 +262,7 @@ while flag_correr:
             #botones
         pantalla.blit(TEXTO_COMENZAR,(pos_comenzar[0]+20,
                                             pos_comenzar[1]+30))
-        pantalla.blit(TEXTO_REINICIAR,(pos_reiniciar[0]+20,
+        pantalla.blit(TEXTO_TERMINAR,(pos_terminar[0]+20,
                                             600))
                 #respuestas
         if estado_de_juego["respuestas_visibles"]:
