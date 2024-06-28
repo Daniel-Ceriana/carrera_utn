@@ -192,7 +192,7 @@ while flag_correr:
                 frenar_juego(estado_de_juego)
                 # terminar_juego(estado_de_juego,pygame,pantalla,colores)
             if chequear_click_en_rect(evento.pos,pos_comenzar):
-                reiniciar_estado_juego(estado_de_juego,lista_casillas)
+                reiniciar_estado_juego(estado_de_juego)
                 if estado_de_juego["flag_primera_ejecucion"]:
                     estado_de_juego["flag_primera_ejecucion"] = False
                 estado_de_juego["respuestas_visibles"] = True

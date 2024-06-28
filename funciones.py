@@ -1,21 +1,29 @@
 from funciones_archivos import *
 from copy import deepcopy
-def chequear_click_en_rect(posicion_click:tuple,item_rect:tuple):
-    if ((posicion_click[0] > item_rect[0] and 
-         posicion_click[0] < item_rect[0]+item_rect[2])
-        and (posicion_click[1] > item_rect[1] and 
-             posicion_click[1] < item_rect[1] + item_rect[3])):
-               return True
-    return False
+def chequear_click_en_rect(posicion_click:tuple,item_rect:tuple)->bool:
+     '''
+     chequea que el click haya sido en un area determinada
+     Parametros: posicion_click:tuple
+                    item_rect:tuple
+     Retorno: bool => True si cliquea en el rect, False si no
+     '''
+     if ((posicion_click[0] > item_rect[0] and 
+          posicion_click[0] < item_rect[0]+item_rect[2])
+          and (posicion_click[1] > item_rect[1] and 
+               posicion_click[1] < item_rect[1] + item_rect[3])):
+                    return True
+     return False
 
 def cambiar_respuesta_apretada(estado_juego:dict,key_respuesta_apretada:str,
                                respuesta:str,key_flag_siguiente_pregunta:str):
      estado_juego[key_respuesta_apretada] = respuesta
      estado_juego[key_flag_siguiente_pregunta] = True
      
-def reiniciar_estado_juego(estado_juego:dict,lista_casillas:list):
+def reiniciar_estado_juego(estado_juego:dict):
      '''
      funcion especifica a carrera_utn para reiniciar el estado de juego
+     Parametros: estado_juego:dict => variables de entorno de juego
+     Retorno: No
      '''
      estado_juego["respuestas_visibles"] = True
      estado_juego["contador"] = 0
@@ -23,14 +31,20 @@ def reiniciar_estado_juego(estado_juego:dict,lista_casillas:list):
      estado_juego["respuesta_apretada"] = ""
      estado_juego["score"] = 0
      estado_juego["segundos"] = '5'
-     # estado_juego["pos_personaje"] = list(lista_casillas[0])
      estado_juego["indice_pos_personaje"] = 0
      estado_juego["fin_tiempo"] = False
      
      
 def actualizar_textos(estado_juego:dict,listas:dict,fuente,fuente_respuestas,colores,textos):
      '''
-     funcion especifica a carrera_utn para actualizar los textos    
+     funcion especifica a carrera_utn para actualizar los textos
+     Parametros: estado_juego:dict => variables de entorno de juego
+               listas:dict => 
+               fuente => fuente para los render
+               fuente_respuestas => fuente para los render de respuesta
+               colores => constantes colores
+               textos => textos a renderizar
+     Retorno: No    
      '''
      estado_juego["pregunta"] = listas["lista_preguntas"][estado_juego["contador"]]
      estado_juego["tema"] = listas["lista_temas"][estado_juego["contador"]]
@@ -48,6 +62,8 @@ def actualizar_textos(estado_juego:dict,listas:dict,fuente,fuente_respuestas,col
 def frenar_juego(estado_juego:dict):
      '''
      funcion especifica a carrera_utn para frenar el estado de juego
+     Parametros: estado_juego:dict => variables de entorno de juego
+     Retorno: No
      '''
      estado_juego["respuestas_visibles"] = False
      # estado_juego["contador"] = 0
@@ -59,6 +75,14 @@ def frenar_juego(estado_juego:dict):
      estado_juego["fin_tiempo"] = True
      
 def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
+     '''
+     Mostrar los puntajes en pantalla
+     Parametros:  lista_puntajes => lista con todos los puntajes
+               pygame => objeto pygame
+               pantalla => lugar donde pintar
+               colores => constantes colores
+     Retorno:
+     '''
      alto_base_puntajes = 200
      POS_PUNTAJES = [400,100,100,100]
      pos_puntajes = [800,alto_base_puntajes,100,100]
@@ -83,6 +107,12 @@ def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
 def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
      '''
      termina el juego y guarda el score
+     Parametros: estado_juego:dict => variables de entorno de juego
+               pygame => objeto pygame
+               pantalla => lugar donde pintar
+               colores => constantes colores
+
+     Retorno: No
      '''
      aux_guardar_ordenado = []
      
