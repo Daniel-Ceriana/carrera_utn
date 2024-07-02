@@ -120,7 +120,12 @@ dict_textos={
     "texto_respuesta_a":{"texto" : dict_fuentes["fuente_respuestas"].render(str("A"),True,colores.COLOR_AMARILLO),"pos":pos_respuesta_A},
     "texto_respuesta_b":{"texto" : dict_fuentes["fuente_respuestas"].render(str("B"),True,colores.COLOR_AMARILLO),"pos":pos_respuesta_B},
     "texto_respuesta_c":{"texto" : dict_fuentes["fuente_respuestas"].render(str("C"),True,colores.COLOR_AMARILLO),"pos":pos_respuesta_C},
-    "CUADRO_RESPUESTAS":{"texto":"","pos":POS_CUADRO_RESPUESTAS}
+    "CUADRO_RESPUESTAS":{"texto":"","pos":POS_CUADRO_RESPUESTAS},
+    "CUADRO_COMENZAR":{"texto":"","pos":pos_comenzar},
+    "CUADRO_TERMINAR":{"texto":"","pos":pos_terminar},
+    "CUADRO_RESPUESTA_A":{"texto":"","pos":pos_respuesta_A},
+    "CUADRO_RESPUESTA_B":{"texto":"","pos":pos_respuesta_B},
+    "CUADRO_RESPUESTA_C":{"texto":"","pos":pos_respuesta_C}
 }
 
 

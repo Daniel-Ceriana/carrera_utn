@@ -205,8 +205,8 @@ def mostrar_juego(estado_de_juego,pygame,pantalla,colores,
      imagen_utn = pygame.image.load("Logo-utn.png")
      imagen_utn = pygame.transform.scale(imagen_utn,(90,45))
      
-     pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["TEXTO_COMENZAR"]["pos"])
-     pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["TEXTO_TERMINAR"]["pos"])
+     pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_COMENZAR"]["pos"])
+     pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_TERMINAR"]["pos"])
      pygame.draw.rect(pantalla,colores.SKYBLUE4,dict_textos["CUADRO_RESPUESTAS"]["pos"])
      
      #personaje
@@ -244,13 +244,13 @@ def mostrar_juego(estado_de_juego,pygame,pantalla,colores,
                    dict_textos["TEXTO_TERMINAR"]["pos"])
                #respuestas
      if estado_de_juego["respuestas_visibles"]:
-          pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["texto_respuesta_a"]["pos"],5)
+          pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_RESPUESTA_A"]["pos"],5)
           pantalla.blit(dict_textos["texto_respuesta_a"],(dict_textos["texto_respuesta_a"]["pos"][0]+15
                                    ,dict_textos["texto_respuesta_a"]["pos"][1]+35))
-          pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["texto_respuesta_b"]["pos"],5)
+          pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_RESPUESTA_B"]["pos"],5)
           pantalla.blit(dict_textos["texto_respuesta_b"],(dict_textos["texto_respuesta_b"]["pos"][0]+15
                                    ,dict_textos["texto_respuesta_b"]["pos"][1]+35))
-          pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["texto_respuesta_c"]["pos"],5)  
+          pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_RESPUESTA_C"]["pos"],5)  
           pantalla.blit(dict_textos["texto_respuesta_c"],(dict_textos["texto_respuesta_c"]["pos"][0]+15
                                    ,dict_textos["texto_respuesta_c"]["pos"][1]+35))
      
