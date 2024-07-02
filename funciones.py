@@ -81,7 +81,11 @@ def frenar_juego(estado_juego:dict):
      estado_juego["vista"] = "nombre"
      
      
-def cargar_puntajes():
+def cargar_puntajes()->list:
+     '''
+     Carga los puntajes del archivo scores.json
+     retorno: ->list puntajes o lista vacia si hubo error
+     '''
      try:
           puntajes = leer_json_lista("scores.json")
           return puntajes
@@ -90,6 +94,10 @@ def cargar_puntajes():
           return []
      
 def guardar_puntajes(estado_juego):
+     '''
+     guarda los puntajes ordenados en el archivo scores.json
+     
+     '''
      puntajes = cargar_puntajes()
      aux_guardar_ordenado = []
      if not estado_juego["guardado"]:
