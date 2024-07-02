@@ -12,10 +12,26 @@ dict_fuentes={
     "fuente_respuestas" : pygame.font.SysFont("Arial",20),
     "fuente_boost" : pygame.font.SysFont("Arial",10)
 }
+
+
+#assets
+#cargar logo
+
+imagen = pygame.image.load("logo_carrera_de_mente.png")
+imagen = pygame.transform.scale(imagen,(200,200))
+imagen_utn = pygame.image.load("Logo-utn.png")
+imagen_utn = pygame.transform.scale(imagen_utn,(90,45))
+    #personaje
+personaje = pygame.image.load("personaje.png")
+personaje = pygame.transform.scale(personaje,(100,100))
+
+dict_assets = {
+    "imagen":imagen,
+    "imagen_utn":imagen_utn,
+    "personaje":personaje
+}
+
 #props estado_de_juego
-
-
-
     
 estado_de_juego = { 
     "pregunta" : "",
@@ -127,22 +143,11 @@ dict_textos={
     "CUADRO_RESPUESTA_B":{"texto":"","pos":pos_respuesta_B},
     "CUADRO_RESPUESTA_C":{"texto":"","pos":pos_respuesta_C}
 }
-
-
-
-
-
-    
-
     
 
 #timer
 timer_segundos = pygame.USEREVENT
 pygame.time.set_timer(timer_segundos,1000)
-
-
-
-
 
 #crear la pantalla
 pantalla = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
@@ -235,17 +240,14 @@ while flag_correr:
 
 
 # vistas = [{"nombre":"juego"},{"nombre":"nombre"},{"nombre":"puntajes"}]
-    print(estado_de_juego["vista"])
     match estado_de_juego["vista"]:
         case "juego":
             mostrar_juego(estado_de_juego,pygame,pantalla,colores,dict_textos,
-                          lista_casillas,dict_fuentes)
+                          lista_casillas,dict_fuentes,dict_assets)
         case "nombre":
-            pass
+            terminar_juego(estado_de_juego,pygame,pantalla,colores)            
         case "puntajes":
             pass
-    if estado_de_juego["fin_tiempo"]:                          
-        terminar_juego(estado_de_juego,pygame,pantalla,colores)
     pygame.display.flip()
     
 pygame.quit()

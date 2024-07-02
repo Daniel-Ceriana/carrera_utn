@@ -51,13 +51,13 @@ def actualizar_textos(estado_juego:dict,listas:dict,fuente,fuente_respuestas,col
      estado_juego["respuesta_a"] = listas["lista_respuesta_a"][estado_juego["contador"]]
      estado_juego["respuesta_b"] = listas["lista_respuesta_b"][estado_juego["contador"]]
      estado_juego["respuesta_c"] = listas["lista_respuesta_c"][estado_juego["contador"]]
-     textos["texto_tema"] = fuente.render(str(estado_juego["tema"]),True,colores.COLOR_AMARILLO)
-     textos["texto_pregunta"] = fuente.render(str(estado_juego["pregunta"]),True,colores.BLACK)
-     textos["texto_respuesta_a"] = fuente_respuestas.render(str(estado_juego["respuesta_a"]),True,colores.COLOR_AMARILLO)
-     textos["texto_respuesta_b"] = fuente_respuestas.render(str(estado_juego["respuesta_b"]),True,colores.COLOR_AMARILLO)
-     textos["texto_respuesta_c"] = fuente_respuestas.render(str(estado_juego["respuesta_c"]),True,colores.COLOR_AMARILLO)
-     textos["texto_score_variable"] = fuente.render(str(estado_juego["score"]),True,colores.BLACK)
-     textos["texto_tiempo_variable"] = fuente.render(str(estado_juego["segundos"]),True,colores.BLACK)
+     textos["texto_tema"]["texto"] = fuente.render(str(estado_juego["tema"]),True,colores.COLOR_AMARILLO)
+     textos["texto_pregunta"]["texto"] = fuente.render(str(estado_juego["pregunta"]),True,colores.BLACK)
+     textos["texto_respuesta_a"]["texto"] = fuente_respuestas.render(str(estado_juego["respuesta_a"]),True,colores.COLOR_AMARILLO)
+     textos["texto_respuesta_b"]["texto"] = fuente_respuestas.render(str(estado_juego["respuesta_b"]),True,colores.COLOR_AMARILLO)
+     textos["texto_respuesta_c"]["texto"] = fuente_respuestas.render(str(estado_juego["respuesta_c"]),True,colores.COLOR_AMARILLO)
+     textos["texto_score_variable"]["texto"] = fuente.render(str(estado_juego["score"]),True,colores.BLACK)
+     textos["texto_tiempo_variable"]["texto"] = fuente.render(str(estado_juego["segundos"]),True,colores.BLACK)
      
 def frenar_juego(estado_juego:dict):
      '''
@@ -73,6 +73,7 @@ def frenar_juego(estado_juego:dict):
      estado_juego["segundos"] = '5'
      # estado_juego["indice_pos_personaje"] = 0
      estado_juego["fin_tiempo"] = True
+     estado_juego["vista"] = "nombre"
      
 def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
      '''
@@ -184,10 +185,13 @@ def verificar_casilla_especial(estado_juego:list,lista_casillas_especiales:list)
 def mostrar_textos(pantalla,textos):
     for key in textos.keys():
         pantalla.blit(textos[key]["texto"],textos[key]["pos"])
+        
+        
+        
+        
     
 def mostrar_juego(estado_de_juego,pygame,pantalla,colores,
-                  dict_textos,lista_casillas,dict_fuentes):
-     print("asasda")
+                  dict_textos,lista_casillas,dict_fuentes,dict_assets):
              #realizar todos los cambios de texto
      if not estado_de_juego["flag_primera_ejecucion"]:
           actualizar_textos(estado_de_juego,{
@@ -199,19 +203,12 @@ def mostrar_juego(estado_de_juego,pygame,pantalla,colores,
                           dict_fuentes["fuente"],dict_fuentes["fuente_respuestas"],colores,dict_textos)
         
      
-     #cargar logo
-     imagen = pygame.image.load("logo_carrera_de_mente.png")
-     imagen = pygame.transform.scale(imagen,(200,200))
-     imagen_utn = pygame.image.load("Logo-utn.png")
-     imagen_utn = pygame.transform.scale(imagen_utn,(90,45))
-     
+
      pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_COMENZAR"]["pos"])
      pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_TERMINAR"]["pos"])
      pygame.draw.rect(pantalla,colores.SKYBLUE4,dict_textos["CUADRO_RESPUESTAS"]["pos"])
      
-     #personaje
-     personaje = pygame.image.load("personaje.png")
-     personaje = pygame.transform.scale(personaje,(100,100))
+
      ###casillas
      lista_colores = [colores.ORANGE,colores.GREEN,colores.SKYBLUE4,
                     colores.RED1,colores.VIOLET,colores.ORANGE,
@@ -233,8 +230,10 @@ def mostrar_juego(estado_de_juego,pygame,pantalla,colores,
      pantalla.blit(dict_textos["TEXTO_TIEMPO"]["texto"],dict_textos["TEXTO_TIEMPO"]["pos"])
      pantalla.blit(dict_textos["texto_tiempo_variable"]["texto"],dict_textos["texto_tiempo_variable"]["pos"])
      
-     pantalla.blit(dict_textos["TEXTO_AVANZA"]["texto"],dict_textos["TEXTO_AVANZA"]["pos"])
-     pantalla.blit(dict_textos["TEXTO_RETROCEDE"]["texto"],dict_textos["TEXTO_RETROCEDE"]["pos"])
+     #         pantalla.blit(TEXTO_AVANZA,lista_casillas[casillas_especiales[0]["numero"]])
+     #    pantalla.blit(TEXTO_RETROCEDE,lista_casillas[casillas_especiales[1]["numero"]])
+     pantalla.blit(dict_textos["TEXTO_AVANZA"]["texto"],lista_casillas[dict_textos["TEXTO_AVANZA"]["pos"]])
+     pantalla.blit(dict_textos["TEXTO_RETROCEDE"]["texto"],lista_casillas[dict_textos["TEXTO_RETROCEDE"]["pos"]])
           #preguntas/respuestas
 
           #botones
@@ -245,16 +244,16 @@ def mostrar_juego(estado_de_juego,pygame,pantalla,colores,
                #respuestas
      if estado_de_juego["respuestas_visibles"]:
           pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_RESPUESTA_A"]["pos"],5)
-          pantalla.blit(dict_textos["texto_respuesta_a"],(dict_textos["texto_respuesta_a"]["pos"][0]+15
+          pantalla.blit(dict_textos["texto_respuesta_a"]["texto"],(dict_textos["texto_respuesta_a"]["pos"][0]+15
                                    ,dict_textos["texto_respuesta_a"]["pos"][1]+35))
           pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_RESPUESTA_B"]["pos"],5)
-          pantalla.blit(dict_textos["texto_respuesta_b"],(dict_textos["texto_respuesta_b"]["pos"][0]+15
+          pantalla.blit(dict_textos["texto_respuesta_b"]["texto"],(dict_textos["texto_respuesta_b"]["pos"][0]+15
                                    ,dict_textos["texto_respuesta_b"]["pos"][1]+35))
           pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,dict_textos["CUADRO_RESPUESTA_C"]["pos"],5)  
-          pantalla.blit(dict_textos["texto_respuesta_c"],(dict_textos["texto_respuesta_c"]["pos"][0]+15
+          pantalla.blit(dict_textos["texto_respuesta_c"]["texto"],(dict_textos["texto_respuesta_c"]["pos"][0]+15
                                    ,dict_textos["texto_respuesta_c"]["pos"][1]+35))
      
-     pantalla.blit(imagen,(10,10))
-     pantalla.blit(imagen_utn,(64,100))
+     pantalla.blit(dict_assets["imagen"],(10,10))
+     pantalla.blit(dict_assets["imagen_utn"],(64,100))
      
-     pantalla.blit(personaje,estado_de_juego["pos_personaje"])
+     pantalla.blit(dict_assets["personaje"],estado_de_juego["pos_personaje"])
