@@ -25,16 +25,20 @@ def reiniciar_estado_juego(estado_juego:dict):
      Parametros: estado_juego:dict => variables de entorno de juego
      Retorno: No
      '''
-     estado_juego["respuestas_visibles"] = True
-     estado_juego["contador"] = 0
-     estado_juego["flag_siguiente_pregunta"] = False
-     estado_juego["respuesta_apretada"] = ""
-     estado_juego["score"] = 0
-     estado_juego["segundos"] = '5'
-     estado_juego["indice_pos_personaje"] = 0
-     estado_juego["fin_tiempo"] = False
-     estado_juego["vista"] = "juego"
-     
+     estado_de_juego_por_defecto = { 
+          "respuestas_visibles" : True,
+          "contador" : 0,
+          "flag_siguiente_pregunta" : False,
+          "respuesta_apretada" : "",
+          "score" : 0,
+          "segundos" : '5',
+          "indice_pos_personaje" : 0,
+          "fin_tiempo" : False,
+          "vista" : "juego"
+}
+     for key in estado_de_juego_por_defecto.keys():
+          estado_juego[key] = estado_de_juego_por_defecto[key]
+
      
 def actualizar_textos(estado_juego:dict,listas:dict,fuente,fuente_respuestas,colores,textos):
      '''
