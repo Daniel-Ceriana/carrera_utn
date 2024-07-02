@@ -205,12 +205,10 @@ while flag_correr:
             elif estado_de_juego["respuesta_apretada"] != '' :
                 if estado_de_juego["indice_pos_personaje"] - 1 <= 0:
                     frenar_juego(estado_de_juego)
-                    # terminar_juego(estado_de_juego,pygame,pantalla,colores)
                 else:
                     estado_de_juego["indice_pos_personaje"] -= 1
             if chequear_click_en_rect(evento.pos,pos_terminar):
                 frenar_juego(estado_de_juego)
-                # terminar_juego(estado_de_juego,pygame,pantalla,colores)
             if chequear_click_en_rect(evento.pos,pos_comenzar):
                 reiniciar_estado_juego(estado_de_juego)
                 if estado_de_juego["flag_primera_ejecucion"]:
@@ -248,7 +246,8 @@ while flag_correr:
             mostrar_nombre(estado_de_juego,pygame,pantalla,colores)            
         case "puntajes":
             puntajes = cargar_puntajes()
-            mostrar_puntajes(puntajes,pygame,pantalla,colores) 
+            if len(puntajes) > 0:
+                mostrar_puntajes(puntajes,pygame,pantalla,colores) 
     pygame.display.flip()
     
 pygame.quit()

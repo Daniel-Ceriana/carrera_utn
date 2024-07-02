@@ -112,8 +112,7 @@ def guardar_puntajes(estado_juego):
      else:
           estado_juego["vista"] = "puntajes"
           print("cambio de vista a puntaje")
-          ####sacar
-          # mostrar_puntajes(puntajes,pygame,pantalla,colores)
+
      
 def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
      '''
