@@ -33,6 +33,7 @@ def reiniciar_estado_juego(estado_juego:dict):
      estado_juego["segundos"] = '5'
      estado_juego["indice_pos_personaje"] = 0
      estado_juego["fin_tiempo"] = False
+     estado_juego["vista"] = "juego"
      
      
 def actualizar_textos(estado_juego:dict,listas:dict,fuente,fuente_respuestas,colores,textos):
@@ -75,6 +76,45 @@ def frenar_juego(estado_juego:dict):
      estado_juego["fin_tiempo"] = True
      estado_juego["vista"] = "nombre"
      
+     
+def cargar_puntajes():
+     try:
+          puntajes = leer_json_lista("scores.json")
+          return puntajes
+     except:
+          print('Ocurrio un error al leer el archivo de scores')
+          return []
+     
+def guardar_puntajes(estado_juego):
+     puntajes = cargar_puntajes()
+     aux_guardar_ordenado = []
+     if not estado_juego["guardado"]:
+          try:
+               if len(puntajes) > 0:
+                    aux_puntajes = deepcopy(puntajes)
+                    if len(estado_juego["nombre_jugador"])>0:
+                         aux_puntajes.append({"nombre":estado_juego["nombre_jugador"],
+                                             "score":estado_juego["score"]})
+                    else:
+                         aux_puntajes.append({"nombre":"NOMBRE_DESCONOCIDO",
+                         "score":estado_juego["score"]})
+                    aux_puntajes.sort(key=lambda item : int(item["score"]), reverse=True)
+                    i = 0
+                    for item in aux_puntajes:
+                         if i < 10:
+                              aux_guardar_ordenado.append(item)
+                         i += 1
+                    guardar_json_lista("scores.json",aux_guardar_ordenado)
+                    estado_juego["guardado"] = True
+                    print("Se guardo el puntaje")
+          except:
+               print('Ocurrio un error al guardar el archivo de scores')
+     else:
+          estado_juego["vista"] = "puntajes"
+          print("cambio de vista a puntaje")
+          ####sacar
+          # mostrar_puntajes(puntajes,pygame,pantalla,colores)
+     
 def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
      '''
      Mostrar los puntajes en pantalla
@@ -105,7 +145,7 @@ def mostrar_puntajes(lista_puntajes:list,pygame,pantalla,colores):
                pos_puntajes[1] += 50
                POS_NOMBRES[1] += 50
                
-def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
+def mostrar_nombre(estado_juego:dict,pygame,pantalla,colores):
      '''
      termina el juego y guarda el score
      Parametros: estado_juego:dict => variables de entorno de juego
@@ -114,9 +154,7 @@ def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
                colores => constantes colores
 
      Retorno: No
-     '''
-     aux_guardar_ordenado = []
-     
+     '''     
      fuente = pygame.font.SysFont("Arial",30)
      TEXTO_FINALIZADO = fuente.render(str("JUEGO FINALIZADO, SU PUNTAJE:"),True,colores.BLACK)
      PUNTAJE_FINALIZADO = fuente.render(str(estado_juego["score"]),True,colores.BLACK)
@@ -139,32 +177,7 @@ def terminar_juego(estado_juego:dict,pygame,pantalla,colores):
           pantalla.blit(TEXTO_INGRESE_NOMBRE,POS_INGRESE_NOMBRE)
           pantalla.blit(TEXTO_NOMBRE,POS_INGRESE_NOMBRE_VARIABLE)
      else:
-          try:
-               puntajes = leer_json_lista("scores.json")
-          except:
-               print('Ocurrio un error al leer el archivo de scores')
-          if not estado_juego["guardado"]:
-               try:
-                    if puntajes:
-                         aux_puntajes = deepcopy(puntajes)
-                         if len(estado_juego["nombre_jugador"])>0:
-                              aux_puntajes.append({"nombre":estado_juego["nombre_jugador"],
-                                                  "score":estado_juego["score"]})
-                         else:
-                              aux_puntajes.append({"nombre":"NOMBRE_DESCONOCIDO",
-                              "score":estado_juego["score"]})
-                         aux_puntajes.sort(key=lambda item : int(item["score"]), reverse=True)
-                         i = 0
-                         for item in aux_puntajes:
-                              if i < 10:
-                                   aux_guardar_ordenado.append(item)
-                              i += 1
-                         guardar_json_lista("scores.json",aux_guardar_ordenado)
-                         estado_juego["guardado"] = True
-               except:
-                 print('Ocurrio un error al guardar el archivo de scores')
-          else:
-               mostrar_puntajes(puntajes,pygame,pantalla,colores)   
+          guardar_puntajes(estado_juego)
                  
                
 

@@ -167,7 +167,7 @@ while flag_correr:
                     if int(estado_de_juego["segundos"]) == 0:
                         estado_de_juego["flag_siguiente_pregunta"] = True
         if evento.type == pygame.KEYDOWN:
-            if estado_de_juego["fin_tiempo"] == True:
+            if estado_de_juego["fin_tiempo"]  == True and estado_de_juego["vista"] == "nombre":
                 if evento.key == pygame.K_BACKSPACE:
                     estado_de_juego["nombre_jugador"] = estado_de_juego["nombre_jugador"][0:-1]
                     print(estado_de_juego["nombre_jugador"])
@@ -245,9 +245,10 @@ while flag_correr:
             mostrar_juego(estado_de_juego,pygame,pantalla,colores,dict_textos,
                           lista_casillas,dict_fuentes,dict_assets)
         case "nombre":
-            terminar_juego(estado_de_juego,pygame,pantalla,colores)            
+            mostrar_nombre(estado_de_juego,pygame,pantalla,colores)            
         case "puntajes":
-            pass
+            puntajes = cargar_puntajes()
+            mostrar_puntajes(puntajes,pygame,pantalla,colores) 
     pygame.display.flip()
     
 pygame.quit()
