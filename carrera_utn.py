@@ -7,10 +7,16 @@ ANCHO_VENTANA = 1280
 ALTO_VENTANA = 720
 
 #crear una fuente
-fuente = pygame.font.SysFont("Arial",30)
-fuente_respuestas = pygame.font.SysFont("Arial",20)
-fuente_boost = pygame.font.SysFont("Arial",10)
+dict_fuentes={
+    "fuente" : pygame.font.SysFont("Arial",30),
+    "fuente_respuestas" : pygame.font.SysFont("Arial",20),
+    "fuente_boost" : pygame.font.SysFont("Arial",10)
+}
 #props estado_de_juego
+
+
+
+    
 estado_de_juego = { 
     "pregunta" : "",
     "tema" : "",
@@ -29,48 +35,24 @@ estado_de_juego = {
     "fin_tiempo" : False,
     "nombre_jugador" : "",
     "mostrar_scores":False,
-    "guardado":False
+    "guardado":False,
+    "vista" : "juego",
+    "lista_preguntas" : [],
+    "lista_temas" : [],
+    "lista_respuesta_a" : [],
+    "lista_respuesta_b" : [],
+    "lista_respuesta_c" : [],
+    "lista_correctas" : []
 }
 
-TEXTO_SCORE = fuente.render(str("SCORE"),True,colores.BLACK)
-TEXTO_COMENZAR = fuente.render(str("COMENZAR"),True,colores.BLACK)
-TEXTO_TERMINAR = fuente.render(str("TERMINAR"),True,colores.BLACK)
-TEXTO_TIEMPO = fuente.render(str("TIEMPO"),True,colores.BLACK)
-
-TEXTO_AVANZA = fuente_boost.render(str("Avanza 1"),True,colores.BLACK)
-TEXTO_RETROCEDE = fuente_boost.render(str("Retrocede 1"),True,colores.BLACK)
-
-dict_textos={
-    "texto_tema" : fuente.render(str("tema"),True,colores.COLOR_AMARILLO),
-    "texto_pregunta" : fuente.render(str("pregunta"),True,colores.BLACK),
-    "texto_score_variable" : fuente.render(str(estado_de_juego["score"]),True,colores.BLACK),
-    "texto_tiempo_variable" : fuente.render(str(estado_de_juego["segundos"]),True,colores.BLACK),
-    "texto_respuesta_a" : fuente_respuestas.render(str("A"),True,colores.COLOR_AMARILLO),
-    "texto_respuesta_b" : fuente_respuestas.render(str("B"),True,colores.COLOR_AMARILLO),
-    "texto_respuesta_c" : fuente_respuestas.render(str("C"),True,colores.COLOR_AMARILLO)
-}
-
-
-
-
-lista_preguntas = []
-lista_temas = []
-lista_respuesta_a = []
-lista_respuesta_b = []
-lista_respuesta_c = []
-lista_correctas = []
 for e_lista in lista:
-    lista_preguntas.append(e_lista["pregunta"])
-    lista_temas.append(e_lista["tema"])
-    lista_respuesta_a.append(e_lista["a"])
-    lista_respuesta_b.append(e_lista["b"])
-    lista_respuesta_c.append(e_lista["c"])
-    lista_correctas.append(e_lista["correcta"])
-    
-#personaje
-personaje = pygame.image.load("personaje.png")
-personaje = pygame.transform.scale(personaje,(100,100))
-    
+    estado_de_juego["lista_preguntas"].append(e_lista["pregunta"])
+    estado_de_juego["lista_temas"].append(e_lista["tema"])
+    estado_de_juego["lista_respuesta_a"].append(e_lista["a"])
+    estado_de_juego["lista_respuesta_b"].append(e_lista["b"])
+    estado_de_juego["lista_respuesta_c"].append(e_lista["c"])
+    estado_de_juego["lista_correctas"].append(e_lista["correcta"])
+
 #casillas
 DIFERENCIA = 80
 DIFERENCIA_ALTO = 100
@@ -98,37 +80,65 @@ lista_casillas = [INICIO,(INICIO[0]+DIFERENCIA,INICIO[1],ANCHO_CASILLA,ALTO_CASI
                   FIN]
 casillas_especiales = [{"numero":6,"boost":1},
                        {"numero":13,"boost":-1}]
-#timer
-timer_segundos = pygame.USEREVENT
-pygame.time.set_timer(timer_segundos,1000)
-#cargar logo
-imagen = pygame.image.load("logo_carrera_de_mente.png")
-imagen = pygame.transform.scale(imagen,(200,200))
-imagen_utn = pygame.image.load("Logo-utn.png")
-imagen_utn = pygame.transform.scale(imagen_utn,(90,45))
-
-
 
 #posiciones botones
     
 # pos_siguiente_pregunta = (300,20,300,100)
-pos_comenzar = (ANCHO_VENTANA*0.5-300,570,220,100)
-pos_terminar = (ANCHO_VENTANA*0.5+100,570,200,100)
 ANCHO_RESPUESTA = ANCHO_VENTANA / 6
 ALTO_RESPUESTA = 100
+POS_CUADRO_RESPUESTAS = (300,30,950,250)
+pos_comenzar = (ANCHO_VENTANA*0.5-300,570,220,100)
+pos_terminar = (ANCHO_VENTANA*0.5+100,570,200,100)
 pos_respuesta_A = (ANCHO_RESPUESTA*2,ALTO_RESPUESTA,ANCHO_RESPUESTA-10,100)
 pos_respuesta_B = (ANCHO_RESPUESTA*3,ALTO_RESPUESTA,ANCHO_RESPUESTA-10,100)
 pos_respuesta_C = (ANCHO_RESPUESTA*4,ALTO_RESPUESTA,ANCHO_RESPUESTA-10,100)
-POS_CUADRO_RESPUESTAS = (300,30,950,250)
 
 
 #posiciones de variables
-pos_puntaje = (ANCHO_RESPUESTA*5+20,100)
-pos_puntaje_variable = (ANCHO_RESPUESTA*5+20,150)
+pos_score = (ANCHO_RESPUESTA*5+20,100)
+pos_score_variable = (ANCHO_RESPUESTA*5+20,150)
 pos_tiempo = (ANCHO_RESPUESTA*5+20,200)
 pos_tiempo_variable = (ANCHO_RESPUESTA*5+20,250)
 pos_tema = (ANCHO_RESPUESTA*2,220)
 pos_pregunta = (ANCHO_RESPUESTA*2,50)
+pos_avanza = casillas_especiales[0]["numero"]
+pos_retrocede = casillas_especiales[1]["numero"]
+
+dict_textos={
+    "TEXTO_SCORE" :{"texto": dict_fuentes["fuente"].render(str("SCORE"),True,colores.BLACK),"pos":pos_score},
+    "TEXTO_COMENZAR" :{"texto": dict_fuentes["fuente"].render(str("COMENZAR"),True,colores.BLACK),"pos":(pos_comenzar[0]+20,
+                                                                                        pos_comenzar[1]+30)},
+    "TEXTO_TERMINAR" :{"texto": dict_fuentes["fuente"].render(str("TERMINAR"),True,colores.BLACK),"pos":(pos_terminar[0]+20,
+                                                                                        600)},
+    "TEXTO_TIEMPO" :{"texto": dict_fuentes["fuente"].render(str("TIEMPO"),True,colores.BLACK),"pos":pos_tiempo},
+    "TEXTO_AVANZA" :{"texto": dict_fuentes["fuente_boost"].render(str("Avanza 1"),True,colores.BLACK),"pos":pos_avanza},
+    "TEXTO_RETROCEDE" :{"texto": dict_fuentes["fuente_boost"].render(str("Retrocede 1"),True,colores.BLACK),"pos":pos_retrocede},
+    "texto_tema":{"texto" :  dict_fuentes["fuente"].render(str("tema"),True,colores.COLOR_AMARILLO),"pos":pos_tema},
+    "texto_pregunta":{"texto" :  dict_fuentes["fuente"].render(str("pregunta"),True,colores.BLACK),"pos":pos_pregunta},
+    "texto_score_variable":{"texto" : dict_fuentes["fuente"].render(str(estado_de_juego["score"]),True,colores.BLACK),"pos":pos_score_variable},
+    "texto_tiempo_variable":{"texto" :  dict_fuentes["fuente"].render(str(estado_de_juego["segundos"]),True,colores.BLACK),"pos":pos_tiempo_variable},
+    "texto_respuesta_a":{"texto" : dict_fuentes["fuente_respuestas"].render(str("A"),True,colores.COLOR_AMARILLO),"pos":pos_respuesta_A},
+    "texto_respuesta_b":{"texto" : dict_fuentes["fuente_respuestas"].render(str("B"),True,colores.COLOR_AMARILLO),"pos":pos_respuesta_B},
+    "texto_respuesta_c":{"texto" : dict_fuentes["fuente_respuestas"].render(str("C"),True,colores.COLOR_AMARILLO),"pos":pos_respuesta_C},
+    "CUADRO_RESPUESTAS":{"texto":"","pos":POS_CUADRO_RESPUESTAS}
+}
+
+
+
+
+
+    
+
+    
+
+#timer
+timer_segundos = pygame.USEREVENT
+pygame.time.set_timer(timer_segundos,1000)
+
+
+
+
+
 #crear la pantalla
 pantalla = pygame.display.set_mode((ANCHO_VENTANA,ALTO_VENTANA))
 pygame.display.set_caption("Carrera UTN")
@@ -170,7 +180,7 @@ while flag_correr:
                 if estado_de_juego["respuestas_visibles"]:
                     cambiar_respuesta_apretada(estado_de_juego,"respuesta_apretada",
                                                'c',"flag_siguiente_pregunta")
-            if lista_correctas[estado_de_juego["contador"]] == estado_de_juego["respuesta_apretada"]:
+            if estado_de_juego["lista_correctas"][estado_de_juego["contador"]] == estado_de_juego["respuesta_apretada"]:
                 estado_de_juego["score"] += 10
                 if(estado_de_juego["indice_pos_personaje"] + 2 >= len(lista_casillas)):
                     #fin juego
@@ -203,7 +213,7 @@ while flag_correr:
     
     ##control siguiente pregunta
     if estado_de_juego["flag_siguiente_pregunta"]:
-        if estado_de_juego["contador"] == len(lista_preguntas)-1:
+        if estado_de_juego["contador"] == len(estado_de_juego["lista_preguntas"])-1:
                 frenar_juego(estado_de_juego)
                 # terminar_juego(estado_de_juego,pygame,pantalla,colores)
 
@@ -218,70 +228,18 @@ while flag_correr:
     estado_de_juego["indice_pos_personaje"] += boost
     estado_de_juego["pos_personaje"] = list(lista_casillas[estado_de_juego["indice_pos_personaje"]])     
 
-        #realizar todos los cambios de texto
-    if not estado_de_juego["flag_primera_ejecucion"]:
-        actualizar_textos(estado_de_juego,{
-                              "lista_preguntas":lista_preguntas,
-                                "lista_temas":lista_temas,
-                                "lista_respuesta_a":lista_respuesta_a,
-                                "lista_respuesta_b":lista_respuesta_b,
-                                "lista_respuesta_c":lista_respuesta_c},
-                          fuente,fuente_respuestas,colores,dict_textos)
-        
-    if not estado_de_juego["fin_tiempo"]:                      
-        #botones
-            #fijos    
-        pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_comenzar)
-        pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_terminar)
-        pygame.draw.rect(pantalla,colores.SKYBLUE4,POS_CUADRO_RESPUESTAS)
-        
-        ###casillas
-        lista_colores = [colores.ORANGE,colores.GREEN,colores.SKYBLUE4,
-                        colores.RED1,colores.VIOLET,colores.ORANGE,
-                        colores.YELLOW1,colores.GREEN]
-        indice = 0
-        for pos in lista_casillas:
-            pygame.draw.rect(pantalla,lista_colores[indice],pos)
-            indice += 1
-            if indice >= len(lista_colores):
-                indice = 0
-            
-            
-        #Fundir textos
-        pantalla.blit(TEXTO_SCORE,(pos_puntaje))
-        pantalla.blit(dict_textos["texto_score_variable"],
-                                    (pos_puntaje_variable))
-        pantalla.blit(dict_textos["texto_tema"],pos_tema)
-        pantalla.blit(dict_textos["texto_pregunta"],pos_pregunta)
-        pantalla.blit(TEXTO_TIEMPO,pos_tiempo)
-        pantalla.blit(dict_textos["texto_tiempo_variable"],pos_tiempo_variable)
-        
-        pantalla.blit(TEXTO_AVANZA,lista_casillas[casillas_especiales[0]["numero"]])
-        pantalla.blit(TEXTO_RETROCEDE,lista_casillas[casillas_especiales[1]["numero"]])
-            #preguntas/respuestas
-    
-            #botones
-        pantalla.blit(TEXTO_COMENZAR,(pos_comenzar[0]+20,
-                                            pos_comenzar[1]+30))
-        pantalla.blit(TEXTO_TERMINAR,(pos_terminar[0]+20,
-                                            600))
-                #respuestas
-        if estado_de_juego["respuestas_visibles"]:
-            pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_respuesta_A,5)
-            pantalla.blit(dict_textos["texto_respuesta_a"],(pos_respuesta_A[0]+15
-                                        ,pos_respuesta_A[1]+35))
-            pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_respuesta_B,5)
-            pantalla.blit(dict_textos["texto_respuesta_b"],(pos_respuesta_B[0]+15
-                                        ,pos_respuesta_B[1]+35))
-            pygame.draw.rect(pantalla,colores.COLOR_AMARILLO,pos_respuesta_C,5)  
-            pantalla.blit(dict_textos["texto_respuesta_c"],(pos_respuesta_C[0]+15
-                                        ,pos_respuesta_C[1]+35))
-        
-        pantalla.blit(imagen,(10,10))
-        pantalla.blit(imagen_utn,(64,100))
-        
-        pantalla.blit(personaje,estado_de_juego["pos_personaje"])
-    else:
+
+# vistas = [{"nombre":"juego"},{"nombre":"nombre"},{"nombre":"puntajes"}]
+    print(estado_de_juego["vista"])
+    match estado_de_juego["vista"]:
+        case "juego":
+            mostrar_juego(estado_de_juego,pygame,pantalla,colores,dict_textos,
+                          lista_casillas,dict_fuentes)
+        case "nombre":
+            pass
+        case "puntajes":
+            pass
+    if estado_de_juego["fin_tiempo"]:                          
         terminar_juego(estado_de_juego,pygame,pantalla,colores)
     pygame.display.flip()
     
